@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Styles d'impression pour format A5 */
+@media print {
+  @page {
+    size: 148mm 210mm;
+    margin: 5mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Cacher TOUT sauf la facture */
+  body > *:not(.facture-print-wrapper) {
+    display: none !important;
+  }
+
+  /* Afficher le contenu de la facture */
+  #facture-content,
+  #facture-content * {
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  #facture-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 138mm !important;
+    padding: 3mm !important;
+    background: white !important;
+  }
+
+  /* Styles compacts pour A5 */
+  #facture-content img {
+    height: 40px !important;
+    display: block !important;
+    margin: 0 auto 4px !important;
+  }
+
+  #facture-content .text-center.mb-6 {
+    margin-bottom: 6px !important;
+  }
+
+  #facture-content .text-center.mb-6 p {
+    margin: 1px 0 !important;
+    font-size: 8px !important;
+  }
+
+  #facture-content table {
+    width: 100% !important;
+    font-size: 9px !important;
+    display: table !important;
+  }
+
+  #facture-content th,
+  #facture-content td {
+    padding: 3px 4px !important;
+  }
+
+  #facture-content .bg-gradient-to-r {
+    padding: 6px !important;
+    border-radius: 4px !important;
+  }
+
+  #facture-content .text-2xl {
+    font-size: 14px !important;
+  }
+
+  #facture-content .mt-4.p-3 {
+    margin-top: 6px !important;
+    padding: 4px !important;
+  }
+
+  #facture-content .mt-4.p-3 p {
+    font-size: 8px !important;
+  }
+
+  #facture-content .mt-6.text-center {
+    margin-top: 6px !important;
+  }
+
+  #facture-content .inline-flex {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+  }
+}

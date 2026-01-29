@@ -1,0 +1,25 @@
+import pandas as pd
+
+# Analyser les produits
+print("=" * 50)
+print("ANALYSE DES PRODUITS")
+print("=" * 50)
+df_prod = pd.read_excel(r'd:\NdayanneServices\data\Ndayanne_produits 002.xlsx')
+print(f"Total lignes: {len(df_prod)}")
+print(f"Lignes avec PRIX_VENTE: {df_prod['PRIX_VENTE'].notna().sum()}")
+print(f"Lignes avec DESIGNATION: {df_prod['DESIGNATION'].notna().sum()}")
+print(f"Lignes avec REF: {df_prod['REF'].notna().sum()}")
+print(f"Lignes avec CATEGORIE: {df_prod['CATEGORIE'].notna().sum()}")
+print("\nAperçu complet:")
+print(df_prod.to_string())
+
+print("\n" + "=" * 50)
+print("ANALYSE DES CLIENTS")
+print("=" * 50)
+df_cli = pd.read_excel(r'd:\NdayanneServices\data\Ndayanne_clients001.xlsx')
+print(f"Total lignes: {len(df_cli)}")
+print(f"Lignes avec NOM: {df_cli['NOM'].notna().sum()}")
+print(f"Lignes avec TELEPHONE: {df_cli['TELEPHONE'].notna().sum()}")
+print(f"Lignes avec TYPECLIENT: {df_cli['TYPECLIENT'].notna().sum()}")
+print("\nAperçu:")
+print(df_cli.head(20).to_string())

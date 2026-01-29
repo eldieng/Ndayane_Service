@@ -1,0 +1,445 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== UTILISATEURS ====================
+model Utilisateur {
+  id            String   @id @default(cuid())
+  nom           String
+  email         String   @unique
+  motDePasse    String
+  role          Role     @default(VENDEUR)
+  actif         Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  ventes            Vente[]
+  mouvementsStock   MouvementStock[]
+  journalActions    JournalAction[]
+
+  @@map("utilisateurs")
+}
+
+enum Role {
+  ADMIN
+  GERANT
+  VENDEUR
+  RESPONSABLE_STOCK
+  COMPTABLE
+}
+
+// ==================== CLIENTS ====================
+model Client {
+  id            String      @id @default(cuid())
+  nom           String
+  telephone     String?
+  adresse       String?
+  typeClient    TypeClient  @default(PARTICULIER)
+  plafondCredit Float       @default(0)
+  solde         Float       @default(0)
+  actif         Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  ventes        Vente[]
+  commandes     Commande[]
+  paiements     Paiement[]
+  documents     Document[]
+
+  @@map("clients")
+}
+
+enum TypeClient {
+  PARTICULIER
+  CHANTIER
+  ENTREPRISE
+}
+
+// ==================== CATEGORIES ====================
+model Categorie {
+  id        String    @id @default(cuid())
+  nom       String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  produits  Produit[]
+
+  @@map("categories")
+}
+
+// ==================== PRODUITS ====================
+model Produit {
+  id              String   @id @default(cuid())
+  nom             String
+  categorieId     String?
+  image           String?
+  unite           String   @default("pièce")
+  prixAchat       Float    @default(0)
+  prixVente       Float    @default(0)
+  stockMin        Int      @default(0)
+  fournisseur     String?
+  actif           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  categorie                Categorie?                @relation(fields: [categorieId], references: [id])
+  stocks                   Stock[]
+  mouvementsStock          MouvementStock[]
+  lignesVente              LigneVente[]
+  lignesCommande           LigneCommande[]
+  lignesCommandeFournisseur LigneCommandeFournisseur[]
+  retours                  Retour[]
+
+  @@map("produits")
+}
+
+// ==================== DEPOTS ====================
+model Depot {
+  id           String   @id @default(cuid())
+  nom          String   @unique
+  localisation String?
+  principal    Boolean  @default(false)
+  actif        Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  stocks           Stock[]
+  mouvementsStock  MouvementStock[]
+
+  @@map("depots")
+}
+
+// ==================== STOCK ====================
+model Stock {
+  id        String   @id @default(cuid())
+  produitId String
+  depotId   String
+  quantite  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  produit   Produit  @relation(fields: [produitId], references: [id])
+  depot     Depot    @relation(fields: [depotId], references: [id])
+
+  @@unique([produitId, depotId])
+  @@map("stocks")
+}
+
+// ==================== MOUVEMENTS STOCK ====================
+model MouvementStock {
+  id            String          @id @default(cuid())
+  produitId     String
+  depotId       String
+  type          TypeMouvement
+  quantite      Int
+  motif         String?
+  utilisateurId String
+  createdAt     DateTime        @default(now())
+
+  // Relations
+  produit       Produit         @relation(fields: [produitId], references: [id])
+  depot         Depot           @relation(fields: [depotId], references: [id])
+  utilisateur   Utilisateur     @relation(fields: [utilisateurId], references: [id])
+
+  @@map("mouvements_stock")
+}
+
+enum TypeMouvement {
+  ENTREE
+  SORTIE
+  TRANSFERT
+  VENTE
+  RETOUR
+  AJUSTEMENT
+}
+
+// ==================== VENTES ====================
+model Vente {
+  id            String        @id @default(cuid())
+  numero        String        @unique
+  clientId      String?
+  utilisateurId String
+  sousTotal     Float         @default(0)
+  remise        Float         @default(0)
+  total         Float         @default(0)
+  statut        StatutVente   @default(EN_ATTENTE)
+  modePaiement  ModePaiement  @default(ESPECES)
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  client        Client?       @relation(fields: [clientId], references: [id])
+  utilisateur   Utilisateur   @relation(fields: [utilisateurId], references: [id])
+  lignes        LigneVente[]
+  paiements     Paiement[]
+  retours       Retour[]
+
+  @@map("ventes")
+}
+
+enum StatutVente {
+  EN_ATTENTE
+  VALIDEE
+  PAYEE
+  PARTIELLE
+  ANNULEE
+}
+
+// ==================== LIGNES VENTE ====================
+model LigneVente {
+  id           String   @id @default(cuid())
+  venteId      String
+  produitId    String
+  quantite     Int
+  prixUnitaire Float
+  remise       Float    @default(0)
+  total        Float
+  createdAt    DateTime @default(now())
+
+  // Relations
+  vente        Vente    @relation(fields: [venteId], references: [id], onDelete: Cascade)
+  produit      Produit  @relation(fields: [produitId], references: [id])
+
+  @@map("lignes_vente")
+}
+
+// ==================== PAIEMENTS ====================
+model Paiement {
+  id            String         @id @default(cuid())
+  venteId       String?
+  clientId      String?
+  montant       Float
+  modePaiement  ModePaiement
+  typePaiement  TypePaiement   @default(REGLEMENT)
+  reference     String?
+  notes         String?
+  createdAt     DateTime       @default(now())
+
+  // Relations
+  vente         Vente?         @relation(fields: [venteId], references: [id])
+  client        Client?        @relation(fields: [clientId], references: [id])
+
+  @@map("paiements")
+}
+
+enum TypePaiement {
+  REGLEMENT     // Paiement d'une vente
+  ACOMPTE       // Acompte client (crédit)
+  REMBOURSEMENT // Remboursement au client
+}
+
+enum ModePaiement {
+  ESPECES
+  MOBILE_MONEY
+  WAVE
+  ORANGE_MONEY
+  CHEQUE
+  CARTE_BANCAIRE
+  VIREMENT
+  CREDIT
+}
+
+// ==================== COMMANDES ====================
+model Commande {
+  id            String          @id @default(cuid())
+  numero        String          @unique
+  clientId      String
+  statut        StatutCommande  @default(EN_ATTENTE)
+  dateRetrait   DateTime?
+  notes         String?
+  total         Float           @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  // Relations
+  client        Client          @relation(fields: [clientId], references: [id])
+  lignes        LigneCommande[]
+
+  @@map("commandes")
+}
+
+enum StatutCommande {
+  EN_ATTENTE
+  EN_PREPARATION
+  PRETE
+  LIVREE
+  ANNULEE
+}
+
+// ==================== LIGNES COMMANDE ====================
+model LigneCommande {
+  id           String    @id @default(cuid())
+  commandeId   String
+  produitId    String
+  quantite     Int
+  prixUnitaire Float
+  createdAt    DateTime  @default(now())
+
+  // Relations
+  commande     Commande  @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+  produit      Produit   @relation(fields: [produitId], references: [id])
+
+  @@map("lignes_commande")
+}
+
+// ==================== RETOURS ====================
+model Retour {
+  id        String   @id @default(cuid())
+  venteId   String
+  produitId String
+  quantite  Int
+  motif     String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  vente     Vente    @relation(fields: [venteId], references: [id])
+  produit   Produit  @relation(fields: [produitId], references: [id])
+
+  @@map("retours")
+}
+
+// ==================== JOURNAL ACTIONS ====================
+model JournalAction {
+  id            String   @id @default(cuid())
+  utilisateurId String
+  action        String
+  entite        String
+  entiteId      String?
+  details       String?
+  createdAt     DateTime @default(now())
+
+  // Relations
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+
+  @@map("journal_actions")
+}
+
+// ==================== DOCUMENTS (DEVIS / BON DE COMMANDE) ====================
+model Document {
+  id            String         @id @default(cuid())
+  numero        String         @unique
+  type          TypeDocument
+  clientId      String?
+  clientNom     String?
+  clientTel     String?
+  total         Float          @default(0)
+  validite      Int?           // Jours de validité pour les devis
+  dateLivraison DateTime?      // Date de livraison prévue pour les bons
+  vendeur       String?
+  notes         String?
+  statut        StatutDocument @default(EN_ATTENTE)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Relations
+  client        Client?        @relation(fields: [clientId], references: [id])
+  lignes        LigneDocument[]
+
+  @@map("documents")
+}
+
+enum TypeDocument {
+  DEVIS
+  BON_COMMANDE
+}
+
+enum StatutDocument {
+  EN_ATTENTE
+  ACCEPTE
+  REFUSE
+  CONVERTI   // Converti en vente
+  EXPIRE
+}
+
+model LigneDocument {
+  id           String   @id @default(cuid())
+  documentId   String
+  produitId    String?
+  designation  String
+  quantite     Int
+  prixUnitaire Float
+  total        Float
+  createdAt    DateTime @default(now())
+
+  // Relations
+  document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("lignes_document")
+}
+
+// ==================== FOURNISSEURS ====================
+model Fournisseur {
+  id            String   @id @default(cuid())
+  nom           String
+  telephone     String?
+  email         String?
+  adresse       String?
+  actif         Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  commandesFournisseur  CommandeFournisseur[]
+
+  @@map("fournisseurs")
+}
+
+// ==================== COMMANDES FOURNISSEURS ====================
+model CommandeFournisseur {
+  id              String                    @id @default(cuid())
+  numero          String                    @unique
+  fournisseurId   String
+  statut          StatutCommandeFournisseur @default(EN_ATTENTE)
+  dateCommande    DateTime                  @default(now())
+  dateLivraison   DateTime?
+  total           Float                     @default(0)
+  notes           String?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+
+  // Relations
+  fournisseur     Fournisseur               @relation(fields: [fournisseurId], references: [id])
+  lignes          LigneCommandeFournisseur[]
+
+  @@map("commandes_fournisseur")
+}
+
+enum StatutCommandeFournisseur {
+  EN_ATTENTE
+  COMMANDEE
+  EN_TRANSIT
+  LIVREE
+  ANNULEE
+}
+
+// ==================== LIGNES COMMANDE FOURNISSEUR ====================
+model LigneCommandeFournisseur {
+  id                    String               @id @default(cuid())
+  commandeFournisseurId String
+  produitId             String
+  quantiteCommandee     Int
+  quantiteRecue         Int                  @default(0)
+  prixUnitaire          Float
+  createdAt             DateTime             @default(now())
+
+  // Relations
+  commandeFournisseur   CommandeFournisseur  @relation(fields: [commandeFournisseurId], references: [id], onDelete: Cascade)
+  produit               Produit              @relation(fields: [produitId], references: [id])
+
+  @@map("lignes_commande_fournisseur")
+}

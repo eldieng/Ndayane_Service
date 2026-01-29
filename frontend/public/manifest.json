@@ -1,0 +1,20 @@
+{
+  "name": "Ndayane Services - Gestion Quincaillerie",
+  "short_name": "Ndayane",
+  "description": "Application de gestion pour quincaillerie - Ventes, Stock, Clients",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "fr-FR"
+}
