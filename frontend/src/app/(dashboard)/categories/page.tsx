@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Plus, Edit, Trash2, FolderTree, Loader2 } from "lucide-react"
 import { useToast } from "@/components/ui/Toast"
+import { API_URL } from "@/lib/api"
 
 interface Categorie {
   id: string
