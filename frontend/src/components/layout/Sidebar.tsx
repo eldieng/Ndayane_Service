@@ -77,7 +77,11 @@ const menusByRole: Record<string, { title: string; href: string; icon: any }[]> 
   ],
 }
 
-export default function Sidebar() {
+interface SidebarProps {
+  onNavigate?: () => void
+}
+
+export default function Sidebar({ onNavigate }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [userRole, setUserRole] = useState<string>("VENDEUR")
@@ -103,7 +107,7 @@ export default function Sidebar() {
   const menuItems = menusByRole[userRole] || menusByRole.VENDEUR
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col">
+    <aside className="h-full w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col">
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100 flex-shrink-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -122,6 +126,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive 
@@ -140,13 +145,17 @@ export default function Sidebar() {
       <div className="flex-shrink-0 p-3 border-t border-gray-100 bg-gray-50">
         <Link
           href="/parametres"
+          onClick={onNavigate}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
         >
           <Settings className="w-5 h-5 text-gray-500" />
           Paramètres
         </Link>
         <button
-          onClick={handleLogout}
+          onClick={() => {
+            onNavigate?.()
+            handleLogout()
+          }}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
         >
           <LogOut className="w-5 h-5" />

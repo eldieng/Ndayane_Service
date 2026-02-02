@@ -133,14 +133,14 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
-          <p className="text-gray-500">Bienvenue sur votre espace de gestion</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Tableau de bord</h1>
+          <p className="text-sm text-gray-500">Bienvenue sur votre espace de gestion</p>
         </div>
         <Link
           href="/caisse"
-          className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors shadow-md"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors shadow-md"
         >
           <Plus className="w-5 h-5" />
           Nouvelle Vente
@@ -153,16 +153,16 @@ export default function DashboardPage() {
           <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {statsCards.map((stat) => (
-            <div key={stat.title} className="bg-white rounded-xl shadow-sm border p-6">
+            <div key={stat.title} className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">{stat.title}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
                 </div>
-                <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 ${stat.bgColor} rounded-lg flex items-center justify-center flex-shrink-0 ml-2`}>
+                  <stat.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.color}`} />
                 </div>
               </div>
             </div>
@@ -173,15 +173,15 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div>
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions rapides</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {quickActions.map((action) => (
             <Link
               key={action.title}
               href={action.href}
-              className={`${action.color} text-white rounded-xl p-4 flex items-center gap-3 transition-colors shadow-sm`}
+              className={`${action.color} text-white rounded-xl p-3 sm:p-4 flex items-center gap-2 sm:gap-3 transition-colors shadow-sm`}
             >
-              <action.icon className="w-6 h-6" />
-              <span className="font-medium">{action.title}</span>
+              <action.icon className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+              <span className="font-medium text-sm sm:text-base">{action.title}</span>
             </Link>
           ))}
         </div>

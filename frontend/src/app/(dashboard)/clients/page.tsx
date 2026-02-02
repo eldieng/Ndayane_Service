@@ -215,81 +215,137 @@ export default function ClientsPage() {
             </Link>
           </div>
         ) : (
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                {isAdmin && (
-                  <th className="px-4 py-3 text-left">
-                    <button onClick={toggleSelectAll} className="text-gray-400 hover:text-gray-600">
-                      {selectedIds.size === filteredClients.length && filteredClients.length > 0 ? (
-                        <CheckSquare className="w-5 h-5 text-amber-600" />
-                      ) : (
-                        <Square className="w-5 h-5" />
-                      )}
-                    </button>
-                  </th>
-                )}
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solde</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
+          <>
+            {/* Vue Mobile - Cartes */}
+            <div className="md:hidden divide-y">
               {filteredClients.map((client) => (
-                <tr key={client.id} className={`hover:bg-gray-50 ${selectedIds.has(client.id) ? "bg-amber-50" : ""}`}>
+                <div key={client.id} className={`p-4 ${selectedIds.has(client.id) ? "bg-amber-50" : ""}`}>
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      {isAdmin && (
+                        <button onClick={() => toggleSelect(client.id)} className="text-gray-400 hover:text-gray-600">
+                          {selectedIds.has(client.id) ? (
+                            <CheckSquare className="w-5 h-5 text-amber-600" />
+                          ) : (
+                            <Square className="w-5 h-5" />
+                          )}
+                        </button>
+                      )}
+                      <div>
+                        <div className="font-medium text-gray-900">{client.nom}</div>
+                        <span className="px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 rounded-full">
+                          {client.typeClient}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Link href={`/clients/${client.id}`} className="p-2 text-gray-400 hover:text-amber-600">
+                        <Eye className="w-5 h-5" />
+                      </Link>
+                      <Link href={`/clients/${client.id}/modifier`} className="p-2 text-gray-400 hover:text-green-600">
+                        <Edit className="w-5 h-5" />
+                      </Link>
+                      <button onClick={() => handleDelete(client.id)} className="p-2 text-gray-400 hover:text-red-600">
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mt-2">
+                    <div className="flex items-center gap-1">
+                      <Phone className="w-4 h-4" />
+                      {client.telephone || "-"}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-4 h-4" />
+                      {client.adresse || "-"}
+                    </div>
+                  </div>
+                  {client.solde > 0 && (
+                    <div className="mt-2 text-sm text-red-600 font-medium">
+                      Solde: {client.solde.toLocaleString()} FCFA
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Vue Desktop - Tableau */}
+            <table className="w-full hidden md:table">
+              <thead className="bg-gray-50 border-b">
+                <tr>
                   {isAdmin && (
-                    <td className="px-4 py-4">
-                      <button onClick={() => toggleSelect(client.id)} className="text-gray-400 hover:text-gray-600">
-                        {selectedIds.has(client.id) ? (
+                    <th className="px-4 py-3 text-left">
+                      <button onClick={toggleSelectAll} className="text-gray-400 hover:text-gray-600">
+                        {selectedIds.size === filteredClients.length && filteredClients.length > 0 ? (
                           <CheckSquare className="w-5 h-5 text-amber-600" />
                         ) : (
                           <Square className="w-5 h-5" />
                         )}
                       </button>
-                    </td>
+                    </th>
                   )}
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900">{client.nom}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <Phone className="w-4 h-4" />
-                      {client.telephone || "-"}
-                    </div>
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <MapPin className="w-4 h-4" />
-                      {client.adresse || "-"}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 text-xs font-medium bg-amber-100 text-amber-700 rounded-full">
-                      {client.typeClient}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={client.solde > 0 ? "text-red-600 font-medium" : "text-gray-900"}>
-                      {client.solde.toLocaleString()} FCFA
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Link href={`/clients/${client.id}`} className="p-1 text-gray-400 hover:text-amber-600">
-                        <Eye className="w-5 h-5" />
-                      </Link>
-                      <Link href={`/clients/${client.id}/modifier`} className="p-1 text-gray-400 hover:text-green-600">
-                        <Edit className="w-5 h-5" />
-                      </Link>
-                      <button onClick={() => handleDelete(client.id)} className="p-1 text-gray-400 hover:text-red-600">
-                        <Trash2 className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </td>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solde</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y">
+                {filteredClients.map((client) => (
+                  <tr key={client.id} className={`hover:bg-gray-50 ${selectedIds.has(client.id) ? "bg-amber-50" : ""}`}>
+                    {isAdmin && (
+                      <td className="px-4 py-4">
+                        <button onClick={() => toggleSelect(client.id)} className="text-gray-400 hover:text-gray-600">
+                          {selectedIds.has(client.id) ? (
+                            <CheckSquare className="w-5 h-5 text-amber-600" />
+                          ) : (
+                            <Square className="w-5 h-5" />
+                          )}
+                        </button>
+                      </td>
+                    )}
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-gray-900">{client.nom}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <Phone className="w-4 h-4" />
+                        {client.telephone || "-"}
+                      </div>
+                      <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <MapPin className="w-4 h-4" />
+                        {client.adresse || "-"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 text-xs font-medium bg-amber-100 text-amber-700 rounded-full">
+                        {client.typeClient}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={client.solde > 0 ? "text-red-600 font-medium" : "text-gray-900"}>
+                        {client.solde.toLocaleString()} FCFA
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link href={`/clients/${client.id}`} className="p-1 text-gray-400 hover:text-amber-600">
+                          <Eye className="w-5 h-5" />
+                        </Link>
+                        <Link href={`/clients/${client.id}/modifier`} className="p-1 text-gray-400 hover:text-green-600">
+                          <Edit className="w-5 h-5" />
+                        </Link>
+                        <button onClick={() => handleDelete(client.id)} className="p-1 text-gray-400 hover:text-red-600">
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
 

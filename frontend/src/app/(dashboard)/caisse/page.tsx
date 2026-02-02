@@ -453,9 +453,9 @@ export default function CaissePage() {
   }
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex gap-6">
-      {/* Left - Products */}
-      <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div className="lg:h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-4 lg:gap-6">
+      {/* Left - Products - order-1 sur mobile pour être en premier */}
+      <div className="order-1 flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden h-[50vh] lg:h-auto">
         {/* Search */}
         <div className="p-4 border-b relative">
           <div className="relative">
@@ -532,7 +532,7 @@ export default function CaissePage() {
         </div>
 
         {/* Products Grid - Show all products */}
-        <div className="flex-1 p-4 overflow-y-auto">
+        <div className="flex-1 p-2 sm:p-4 overflow-y-auto min-h-[200px]">
           {produits.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
               <ShoppingCart className="w-16 h-16 mx-auto mb-4 text-gray-300" />
@@ -540,18 +540,18 @@ export default function CaissePage() {
               <p className="text-sm">Ajoutez des produits dans le catalogue</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3">
               {produits
                 .filter(p => !selectedCategorie || p.categorieId === selectedCategorie)
                 .map((produit) => (
                 <button
                   key={produit.id}
                   onClick={() => addProduit(produit)}
-                  className="p-3 bg-gray-50 hover:bg-orange-50 border rounded-lg text-left transition-colors"
+                  className="p-2 sm:p-3 bg-gray-50 hover:bg-orange-50 border rounded-lg text-left transition-colors"
                 >
-                  <p className="font-medium text-gray-900 text-sm truncate">{produit.nom}</p>
-                  <p className="text-xs text-gray-500 mt-1">Stock: {getStock(produit)}</p>
-                  <p className="font-bold text-amber-600 mt-1">{produit.prixVente.toLocaleString()} F</p>
+                  <p className="font-medium text-gray-900 text-xs sm:text-sm truncate">{produit.nom}</p>
+                  <p className="text-xs text-gray-500 mt-0.5 sm:mt-1 hidden sm:block">Stock: {getStock(produit)}</p>
+                  <p className="font-bold text-amber-600 text-xs sm:text-sm mt-0.5 sm:mt-1">{produit.prixVente.toLocaleString()} F</p>
                 </button>
               ))}
             </div>
@@ -559,8 +559,8 @@ export default function CaissePage() {
         </div>
       </div>
 
-      {/* Right - Cart */}
-      <div className="w-96 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden">
+      {/* Right - Cart - order-2 sur mobile pour être après les produits */}
+      <div className="order-2 w-full lg:w-96 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden flex-shrink-0 lg:max-h-none">
         {/* Header */}
         <div className="p-4 border-b bg-amber-500 text-white">
           <h2 className="font-semibold text-lg">Panier</h2>
@@ -609,7 +609,7 @@ export default function CaissePage() {
         </div>
 
         {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 min-h-[120px]">
           {lignes.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <ShoppingCart className="w-12 h-12 mx-auto mb-2 text-gray-300" />

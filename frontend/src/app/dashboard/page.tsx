@@ -61,6 +61,7 @@ const quickActions = [
 export default function DashboardPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [stats, setStats] = useState({
     chiffreAffaires: 0,
     ventesJour: 0,
@@ -189,20 +190,30 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar />
-      <div className="ml-64">
-        <Header />
-        <main className="p-6">
+      {/* Mobile sidebar overlay */}
+      <div 
+        className={`fixed inset-0 z-50 lg:hidden bg-black/50 transition-opacity ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} 
+        onClick={() => setSidebarOpen(false)} 
+      />
+      
+      {/* Sidebar */}
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <Sidebar onNavigate={() => setSidebarOpen(false)} />
+      </div>
+      
+      <div className="lg:ml-64">
+        <Header onMenuClick={() => setSidebarOpen(true)} />
+        <main className="p-4 lg:p-6">
           <div className="space-y-6">
             {/* Page Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
-                <p className="text-gray-500">Bienvenue sur votre espace de gestion</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Tableau de bord</h1>
+                <p className="text-sm text-gray-500">Bienvenue sur votre espace de gestion</p>
               </div>
               <Link
                 href="/caisse"
-                className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors"
               >
                 <Plus className="w-5 h-5" />
                 Nouvelle Vente
@@ -215,16 +226,16 @@ export default function DashboardPage() {
                 <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 {statsCards.map((stat) => (
-                  <div key={stat.title} className="bg-white rounded-xl shadow-sm border p-6">
+                  <div key={stat.title} className="bg-white rounded-xl shadow-sm border p-3 sm:p-6">
                     <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-gray-500">{stat.title}</p>
-                        <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs sm:text-sm text-gray-500 truncate">{stat.title}</p>
+                        <p className="text-base sm:text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
                       </div>
-                      <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
-                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                      <div className={`w-8 h-8 sm:w-12 sm:h-12 ${stat.bgColor} rounded-lg flex items-center justify-center flex-shrink-0 ml-2`}>
+                        <stat.icon className={`w-4 h-4 sm:w-6 sm:h-6 ${stat.color}`} />
                       </div>
                     </div>
                   </div>
@@ -234,44 +245,44 @@ export default function DashboardPage() {
 
             {/* Quick Actions */}
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions rapides</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Actions rapides</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
                 {quickActions.map((action) => (
                   <Link
                     key={action.title}
                     href={action.href}
-                    className={`${action.color} text-white rounded-xl p-4 flex items-center gap-3 transition-colors shadow-sm`}
+                    className={`${action.color} text-white rounded-xl p-3 sm:p-4 flex items-center gap-2 sm:gap-3 transition-colors shadow-sm`}
                   >
-                    <action.icon className="w-6 h-6" />
-                    <span className="font-medium">{action.title}</span>
+                    <action.icon className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                    <span className="font-medium text-sm sm:text-base">{action.title}</span>
                   </Link>
                 ))}
               </div>
             </div>
 
             {/* Graphiques */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Graphique Ventes par jour */}
-              <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border p-6">
-                <div className="flex items-center justify-between mb-4">
+              <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0 mb-4">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-amber-500" />
-                    <h3 className="font-semibold text-gray-900">Évolution des ventes</h3>
+                    <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Évolution des ventes</h3>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-400" />
                     <select
                       value={periode}
                       onChange={(e) => setPeriode(e.target.value as "7" | "30" | "90")}
-                      className="text-sm border border-gray-200 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="text-xs sm:text-sm border border-gray-200 rounded-lg px-2 sm:px-3 py-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
                     >
-                      <option value="7">7 derniers jours</option>
-                      <option value="30">30 derniers jours</option>
-                      <option value="90">90 derniers jours</option>
+                      <option value="7">7 jours</option>
+                      <option value="30">30 jours</option>
+                      <option value="90">90 jours</option>
                     </select>
                   </div>
                 </div>
-                <div className="h-64">
+                <div className="h-48 sm:h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={ventesParJour}>
                       <defs>
@@ -294,28 +305,28 @@ export default function DashboardPage() {
               </div>
 
               {/* Comparaison périodique */}
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Comparaison</h3>
-                <div className="space-y-4">
-                  <div className="p-4 bg-amber-50 rounded-lg">
-                    <p className="text-sm text-gray-500">Période actuelle</p>
-                    <p className="text-2xl font-bold text-amber-600">{(comparaison?.actuel || 0).toLocaleString()} F</p>
+              <div className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Comparaison</h3>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="p-3 sm:p-4 bg-amber-50 rounded-lg">
+                    <p className="text-xs sm:text-sm text-gray-500">Période actuelle</p>
+                    <p className="text-lg sm:text-2xl font-bold text-amber-600">{(comparaison?.actuel || 0).toLocaleString()} F</p>
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-500">Période précédente</p>
-                    <p className="text-2xl font-bold text-gray-600">{(comparaison?.precedent || 0).toLocaleString()} F</p>
+                  <div className="p-3 sm:p-4 bg-gray-50 rounded-lg">
+                    <p className="text-xs sm:text-sm text-gray-500">Période précédente</p>
+                    <p className="text-lg sm:text-2xl font-bold text-gray-600">{(comparaison?.precedent || 0).toLocaleString()} F</p>
                   </div>
-                  <div className={`p-4 rounded-lg flex items-center justify-between ${(comparaison?.variation || 0) >= 0 ? "bg-green-50" : "bg-red-50"}`}>
+                  <div className={`p-3 sm:p-4 rounded-lg flex items-center justify-between ${(comparaison?.variation || 0) >= 0 ? "bg-green-50" : "bg-red-50"}`}>
                     <div>
-                      <p className="text-sm text-gray-500">Variation</p>
-                      <p className={`text-xl font-bold ${(comparaison?.variation || 0) >= 0 ? "text-green-600" : "text-red-600"}`}>
+                      <p className="text-xs sm:text-sm text-gray-500">Variation</p>
+                      <p className={`text-base sm:text-xl font-bold ${(comparaison?.variation || 0) >= 0 ? "text-green-600" : "text-red-600"}`}>
                         {(comparaison?.variation || 0) >= 0 ? "+" : ""}{comparaison?.variation || 0}%
                       </p>
                     </div>
                     {(comparaison?.variation || 0) >= 0 ? (
-                      <ArrowUp className="w-8 h-8 text-green-500" />
+                      <ArrowUp className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
                     ) : (
-                      <ArrowDown className="w-8 h-8 text-red-500" />
+                      <ArrowDown className="w-6 h-6 sm:w-8 sm:h-8 text-red-500" />
                     )}
                   </div>
                 </div>
@@ -323,10 +334,10 @@ export default function DashboardPage() {
             </div>
 
             {/* Ventes par catégorie */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Ventes par catégorie</h3>
-                <div className="h-64">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <div className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Ventes par catégorie</h3>
+                <div className="h-48 sm:h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -351,9 +362,9 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Top catégories</h3>
-                <div className="space-y-3">
+              <div className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Top catégories</h3>
+                <div className="space-y-2 sm:space-y-3">
                   {(ventesParCategorie || []).slice(0, 5).map((cat, index) => (
                     <div key={cat.categorie} className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
@@ -379,9 +390,9 @@ export default function DashboardPage() {
             </div>
 
             {/* Alerts & Recent Sales */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Stock Alerts */}
-              <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5 text-orange-500" />
@@ -423,7 +434,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Recent Sales */}
-              <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-green-500" />

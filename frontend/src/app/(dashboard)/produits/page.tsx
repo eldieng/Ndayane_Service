@@ -244,7 +244,62 @@ export default function ProduitsPage() {
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-          <table className="w-full">
+          {/* Vue Mobile - Cartes */}
+          <div className="md:hidden divide-y">
+            {filteredProduits.map((produit) => {
+              const stock = getStockTotal(produit)
+              const isLowStock = stock <= produit.stockMin
+              return (
+                <div key={produit.id} className={`p-4 ${selectedIds.has(produit.id) ? "bg-amber-50" : ""}`}>
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      {isAdmin && (
+                        <button onClick={() => toggleSelect(produit.id)} className="text-gray-400 hover:text-gray-600">
+                          {selectedIds.has(produit.id) ? (
+                            <CheckSquare className="w-5 h-5 text-amber-600" />
+                          ) : (
+                            <Square className="w-5 h-5" />
+                          )}
+                        </button>
+                      )}
+                      <div>
+                        <div className="font-medium text-gray-900">{produit.nom}</div>
+                        <div className="text-xs text-gray-500">{produit.unite}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Link href={`/produits/${produit.id}`} className="p-2 text-gray-400 hover:text-amber-600">
+                        <Eye className="w-5 h-5" />
+                      </Link>
+                      <Link href={`/produits/${produit.id}/modifier`} className="p-2 text-gray-400 hover:text-green-600">
+                        <Edit className="w-5 h-5" />
+                      </Link>
+                      <button onClick={() => handleDelete(produit.id)} className="p-2 text-gray-400 hover:text-red-600">
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2 mt-2">
+                    <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
+                      {produit.categorie?.nom || "-"}
+                    </span>
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                      isLowStock ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+                    }`}>
+                      Stock: {stock}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mt-2 text-sm">
+                    <span className="text-gray-500">Achat: {produit.prixAchat.toLocaleString()} F</span>
+                    <span className="font-medium text-amber-600">Vente: {produit.prixVente.toLocaleString()} F</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Vue Desktop - Tableau */}
+          <table className="w-full hidden md:table">
             <thead className="bg-gray-50 border-b">
               <tr>
                 {isAdmin && (

@@ -196,71 +196,116 @@ export default function VentesPage() {
             </Link>
           </div>
         ) : (
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">N° Vente</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Articles</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
+          <>
+            {/* Vue Mobile - Cartes */}
+            <div className="md:hidden divide-y">
               {filteredVentes.map((vente) => (
-                <tr key={vente.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <span className="font-mono font-medium text-gray-900">{vente.numero || vente.id.slice(0, 8)}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <Calendar className="w-4 h-4" />
-                      {formatDate(vente.createdAt)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm">
-                      <User className="w-4 h-4 text-gray-400" />
-                      {vente.client?.nom || "Client comptoir"}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-gray-500">
-                    {vente.lignes?.length || 0} article(s)
-                  </td>
-                  <td className="px-6 py-4">
+                <div key={vente.id} className="p-4">
+                  <div className="flex items-start justify-between mb-2">
                     <div>
-                      <span className="font-semibold text-gray-900">
-                        {(vente.total || 0).toLocaleString()} FCFA
-                      </span>
-                      {(vente.remise || 0) > 0 && (
-                        <span className="text-xs text-green-600 ml-1">(-{(vente.remise || 0).toLocaleString()})</span>
-                      )}
+                      <span className="font-mono font-medium text-gray-900">{vente.numero || vente.id.slice(0, 8)}</span>
+                      <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                        <Calendar className="w-3 h-3" />
+                        {formatDate(vente.createdAt)}
+                      </div>
                     </div>
-                    {getResteAPayer(vente) > 0 && (
-                      <span className="text-xs text-red-600">
-                        Reste: {getResteAPayer(vente).toLocaleString()} F
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatutColor(vente.statut)}`}>
-                      {getStatutLabel(vente.statut)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
                     <Link
                       href={`/ventes/${vente.id}`}
-                      className="p-2 text-gray-400 hover:text-amber-600 inline-flex"
+                      className="p-2 text-gray-400 hover:text-amber-600"
                     >
                       <Eye className="w-5 h-5" />
                     </Link>
-                  </td>
-                </tr>
+                  </div>
+                  <div className="flex items-center gap-1 text-sm mb-2">
+                    <User className="w-4 h-4 text-gray-400" />
+                    {vente.client?.nom || "Client comptoir"}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getStatutColor(vente.statut)}`}>
+                      {getStatutLabel(vente.statut)}
+                    </span>
+                    <div className="text-right">
+                      <span className="font-semibold text-gray-900">
+                        {(vente.total || 0).toLocaleString()} F
+                      </span>
+                      {getResteAPayer(vente) > 0 && (
+                        <div className="text-xs text-red-600">
+                          Reste: {getResteAPayer(vente).toLocaleString()} F
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Vue Desktop - Tableau */}
+            <table className="w-full hidden md:table">
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">N° Vente</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Articles</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {filteredVentes.map((vente) => (
+                  <tr key={vente.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <span className="font-mono font-medium text-gray-900">{vente.numero || vente.id.slice(0, 8)}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <Calendar className="w-4 h-4" />
+                        {formatDate(vente.createdAt)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1 text-sm">
+                        <User className="w-4 h-4 text-gray-400" />
+                        {vente.client?.nom || "Client comptoir"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-gray-500">
+                      {vente.lignes?.length || 0} article(s)
+                    </td>
+                    <td className="px-6 py-4">
+                      <div>
+                        <span className="font-semibold text-gray-900">
+                          {(vente.total || 0).toLocaleString()} FCFA
+                        </span>
+                        {(vente.remise || 0) > 0 && (
+                          <span className="text-xs text-green-600 ml-1">(-{(vente.remise || 0).toLocaleString()})</span>
+                        )}
+                      </div>
+                      {getResteAPayer(vente) > 0 && (
+                        <span className="text-xs text-red-600">
+                          Reste: {getResteAPayer(vente).toLocaleString()} F
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatutColor(vente.statut)}`}>
+                        {getStatutLabel(vente.statut)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <Link
+                        href={`/ventes/${vente.id}`}
+                        className="p-2 text-gray-400 hover:text-amber-600 inline-flex"
+                      >
+                        <Eye className="w-5 h-5" />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
 

@@ -24,7 +24,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         fixed inset-y-0 left-0 z-50 w-64 transform transition-transform lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <Sidebar />
+        <Sidebar onNavigate={() => setSidebarOpen(false)} />
       </div>
 
       {/* Main content */}

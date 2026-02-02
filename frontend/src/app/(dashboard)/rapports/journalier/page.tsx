@@ -287,53 +287,54 @@ export default function RapportJournalierPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/rapports" className="p-2 hover:bg-gray-100 rounded-lg">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Rapport Journalier</h1>
-            <p className="text-gray-500">Bilan des ventes par jour</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Rapport Journalier</h1>
+            <p className="text-sm text-gray-500">Bilan des ventes par jour</p>
           </div>
         </div>
         <div className="flex gap-2">
           <button
             onClick={generatePDF}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium"
+            className="flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium text-sm"
           >
-            <Download className="w-5 h-5" />
-            Telecharger PDF
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Telecharger</span> PDF
           </button>
           <button
             onClick={generatePDF}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg font-medium"
+            className="flex items-center gap-2 px-3 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg font-medium text-sm"
           >
-            <Printer className="w-5 h-5" />
-            Imprimer
+            <Printer className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Date Selector */}
       <div className="bg-white rounded-xl shadow-sm border p-4">
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-2 sm:gap-4">
           <button
             onClick={() => changeDate(-1)}
             className="p-2 hover:bg-gray-100 rounded-lg"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-3">
-            <Calendar className="w-5 h-5 text-amber-600" />
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-            />
-            <span className="text-gray-500">|</span>
-            <span className="font-medium text-gray-900">{formatDateDisplay(selectedDate)}</span>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-amber-600 hidden sm:block" />
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
+              />
+            </div>
+            <span className="hidden sm:block text-gray-500">|</span>
+            <span className="font-medium text-gray-900 text-sm sm:text-base text-center">{formatDateDisplay(selectedDate)}</span>
           </div>
           <button
             onClick={() => changeDate(1)}
@@ -464,38 +465,64 @@ export default function RapportJournalierPage() {
                     <p>Aucune vente pour cette date</p>
                   </div>
                 ) : (
-                  <table className="w-full">
-                    <thead className="bg-gray-50 sticky top-0">
-                      <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Heure</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Mode</th>
-                        <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Montant</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y">
+                  <>
+                    {/* Vue Mobile */}
+                    <div className="md:hidden divide-y">
                       {ventes.map((vente) => (
-                        <tr key={vente.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-2 text-sm">
-                            {new Date(vente.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
-                          </td>
-                          <td className="px-4 py-2 text-sm">{vente.client?.nom || "Comptoir"}</td>
-                          <td className="px-4 py-2">
-                            <span className={`px-2 py-1 text-xs rounded-full ${
+                        <div key={vente.id} className="p-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs text-gray-500">
+                              {new Date(vente.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                            </span>
+                            <span className="font-medium text-sm">{(vente.total || 0).toLocaleString()} F</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm">{vente.client?.nom || "Comptoir"}</span>
+                            <span className={`px-2 py-0.5 text-xs rounded-full ${
                               vente.modePaiement === "WAVE" ? "bg-amber-100 text-amber-700" :
                               vente.modePaiement === "ORANGE_MONEY" ? "bg-orange-100 text-orange-700" :
-                              vente.modePaiement === "CHEQUE" ? "bg-gray-100 text-gray-700" :
-                              vente.modePaiement === "CARTE_BANCAIRE" ? "bg-purple-100 text-purple-700" :
                               "bg-green-100 text-green-700"
                             }`}>
-                              {vente.modePaiement || "ESPECES"}
+                              {(vente.modePaiement || "ESP").substring(0, 4)}
                             </span>
-                          </td>
-                          <td className="px-4 py-2 text-sm font-medium text-right">{(vente.total || 0).toLocaleString()} F</td>
-                        </tr>
+                          </div>
+                        </div>
                       ))}
-                    </tbody>
-                  </table>
+                    </div>
+                    {/* Vue Desktop */}
+                    <table className="w-full hidden md:table">
+                      <thead className="bg-gray-50 sticky top-0">
+                        <tr>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Heure</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Mode</th>
+                          <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Montant</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {ventes.map((vente) => (
+                          <tr key={vente.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-2 text-sm">
+                              {new Date(vente.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                            </td>
+                            <td className="px-4 py-2 text-sm">{vente.client?.nom || "Comptoir"}</td>
+                            <td className="px-4 py-2">
+                              <span className={`px-2 py-1 text-xs rounded-full ${
+                                vente.modePaiement === "WAVE" ? "bg-amber-100 text-amber-700" :
+                                vente.modePaiement === "ORANGE_MONEY" ? "bg-orange-100 text-orange-700" :
+                                vente.modePaiement === "CHEQUE" ? "bg-gray-100 text-gray-700" :
+                                vente.modePaiement === "CARTE_BANCAIRE" ? "bg-purple-100 text-purple-700" :
+                                "bg-green-100 text-green-700"
+                              }`}>
+                                {vente.modePaiement || "ESPECES"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-sm font-medium text-right">{(vente.total || 0).toLocaleString()} F</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
                 )}
               </div>
             </div>

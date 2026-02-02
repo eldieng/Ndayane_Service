@@ -339,54 +339,87 @@ export default function PaiementsPage() {
             <p className="text-gray-500">Les paiements apparaîtront ici après les ventes</p>
           </div>
         ) : (
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Référence</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vente</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mode</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Montant</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
+          <>
+            {/* Vue Mobile - Cartes */}
+            <div className="md:hidden divide-y">
               {paiements.map((paiement) => (
-                <tr key={paiement.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <Calendar className="w-4 h-4" />
-                      {formatDate(paiement.createdAt)}
+                <div key={paiement.id} className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <Calendar className="w-3 h-3" />
+                        {formatDate(paiement.createdAt)}
+                      </div>
+                      <div className="flex items-center gap-1 text-sm mt-1">
+                        <User className="w-4 h-4 text-gray-400" />
+                        {paiement.client?.nom || paiement.vente?.client?.nom || "Client comptoir"}
+                      </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-sm text-gray-900">{paiement.reference || "-"}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm">
-                      <User className="w-4 h-4 text-gray-400" />
-                      {paiement.client?.nom || paiement.vente?.client?.nom || "Client comptoir"}
-                    </div>
-                    {paiement.typePaiement === "ACOMPTE" ? (
-                      <span className="text-xs text-green-600 font-medium">Acompte</span>
-                    ) : (
-                      <span className="text-xs text-gray-400">{paiement.vente?.numero}</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
+                    <span className="font-semibold text-green-600">
+                      +{paiement.montant.toLocaleString()} F
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
                       {getModeIcon(paiement.modePaiement)}
                       {getModeLabel(paiement.modePaiement)}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <span className="font-semibold text-green-600">
-                      +{paiement.montant.toLocaleString()} FCFA
-                    </span>
-                  </td>
-                </tr>
+                    <span className="text-xs text-gray-400">{paiement.vente?.numero}</span>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Vue Desktop - Tableau */}
+            <table className="w-full hidden md:table">
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Référence</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vente</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mode</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Montant</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {paiements.map((paiement) => (
+                  <tr key={paiement.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <Calendar className="w-4 h-4" />
+                        {formatDate(paiement.createdAt)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="font-mono text-sm text-gray-900">{paiement.reference || "-"}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1 text-sm">
+                        <User className="w-4 h-4 text-gray-400" />
+                        {paiement.client?.nom || paiement.vente?.client?.nom || "Client comptoir"}
+                      </div>
+                      {paiement.typePaiement === "ACOMPTE" ? (
+                        <span className="text-xs text-green-600 font-medium">Acompte</span>
+                      ) : (
+                        <span className="text-xs text-gray-400">{paiement.vente?.numero}</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
+                        {getModeIcon(paiement.modePaiement)}
+                        {getModeLabel(paiement.modePaiement)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="font-semibold text-green-600">
+                        +{paiement.montant.toLocaleString()} FCFA
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
 
