@@ -33,7 +33,7 @@ export default function DepotsPage() {
   const fetchDepots = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/depots", {
+      const response = await fetch(`${API_URL}/depots`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -52,7 +52,7 @@ export default function DepotsPage() {
 
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/depots", {
+      const response = await fetch(`${API_URL}/depots`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

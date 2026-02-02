@@ -73,9 +73,9 @@ export default function DashboardPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [statsRes, alertesRes, ventesRes] = await Promise.all([
-        fetch("${API_URL}/dashboard/stats", { headers }),
-        fetch("${API_URL}/dashboard/alertes-stock", { headers }),
-        fetch("${API_URL}/dashboard/ventes-recentes", { headers }),
+        fetch(`${API_URL}/dashboard/stats`, { headers }),
+        fetch(`${API_URL}/dashboard/alertes-stock`, { headers }),
+        fetch(`${API_URL}/dashboard/ventes-recentes`, { headers }),
       ])
 
       if (statsRes.ok) {

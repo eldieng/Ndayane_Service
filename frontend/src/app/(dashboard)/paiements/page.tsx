@@ -49,7 +49,7 @@ export default function PaiementsPage() {
   const fetchPaiements = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/paiements", {
+      const response = await fetch(`${API_URL}/paiements`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -145,7 +145,7 @@ export default function PaiementsPage() {
     setSubmitting(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/paiements", {
+      const response = await fetch(`${API_URL}/paiements`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

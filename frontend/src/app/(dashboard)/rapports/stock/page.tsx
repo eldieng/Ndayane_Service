@@ -37,7 +37,7 @@ export default function RapportStockPage() {
   const fetchRapport = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/rapports/stock", {
+      const response = await fetch(`${API_URL}/rapports/stock`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {

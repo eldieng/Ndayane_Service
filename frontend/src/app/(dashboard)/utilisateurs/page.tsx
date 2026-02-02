@@ -36,7 +36,7 @@ export default function UtilisateursPage() {
   const fetchUtilisateurs = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/utilisateurs", {
+      const response = await fetch(`${API_URL}/utilisateurs`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {

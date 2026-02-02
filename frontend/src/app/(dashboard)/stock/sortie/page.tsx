@@ -28,8 +28,8 @@ export default function SortieStockPage() {
         const token = localStorage.getItem("token")
         const headers = { Authorization: `Bearer ${token}` }
         const [pRes, dRes] = await Promise.all([
-          fetch("${API_URL}/produits?limit=1000", { headers }),
-          fetch("${API_URL}/depots", { headers }),
+          fetch(`${API_URL}/produits?limit=1000`, { headers }),
+          fetch(`${API_URL}/depots`, { headers }),
         ])
         if (pRes.ok) {
           const result = await pRes.json()
@@ -64,7 +64,7 @@ export default function SortieStockPage() {
     try {
       const token = localStorage.getItem("token")
       for (const ligne of lignes) {
-        const res = await fetch("${API_URL}/stock/sortie", {
+        const res = await fetch(`${API_URL}/stock/sortie`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({ produitId: ligne.produitId, depotId, quantite: ligne.quantite, motif }),

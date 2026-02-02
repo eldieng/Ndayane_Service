@@ -62,7 +62,7 @@ export default function ProduitsPage() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/categories", {
+      const response = await fetch(`${API_URL}/categories`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) setCategories(await response.json())

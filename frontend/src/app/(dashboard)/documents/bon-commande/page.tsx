@@ -64,8 +64,8 @@ export default function BonCommandePage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [produitsRes, clientsRes] = await Promise.all([
-        fetch("${API_URL}/produits?limit=1000", { headers }),
-        fetch("${API_URL}/clients?limit=1000", { headers }),
+        fetch(`${API_URL}/produits?limit=1000`, { headers }),
+        fetch(`${API_URL}/clients?limit=1000`, { headers }),
       ])
 
       if (produitsRes.ok) {
@@ -161,7 +161,7 @@ export default function BonCommandePage() {
     setSaving(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/documents", {
+      const response = await fetch(`${API_URL}/documents`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -163,7 +163,7 @@ export default function ImportPage() {
             
             // Si produit avec stock initial, créer le mouvement de stock
             if (importType === "produits" && mappedData.stockInitial && mappedData.stockInitial > 0) {
-              const stockRes = await fetch("${API_URL}/stock/entree", {
+              const stockRes = await fetch(`${API_URL}/stock/entree`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

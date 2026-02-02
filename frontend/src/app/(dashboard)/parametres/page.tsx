@@ -34,7 +34,7 @@ export default function ParametresPage() {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/auth/profile", {
+      const response = await fetch(`${API_URL}/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -54,7 +54,7 @@ export default function ParametresPage() {
     setSaving(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/utilisateurs/profile", {
+      const response = await fetch(`${API_URL}/utilisateurs/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export default function ParametresPage() {
     setSaving(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("${API_URL}/utilisateurs/change-password", {
+      const response = await fetch(`${API_URL}/utilisateurs/change-password`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
