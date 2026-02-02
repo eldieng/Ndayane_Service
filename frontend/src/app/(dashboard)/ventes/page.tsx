@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Search, Eye, FileText, Loader2, Calendar, User, ChevronLeft, ChevronRight, ClipboardList } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface Paiement {
   montant: number

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { FileText, ClipboardList, Search, Eye, Printer, Trash2, Loader2, Plus, Calendar, Filter, Pencil } from "lucide-react"
 import { ENTREPRISE, getContactPrint } from "@/config/entreprise"
+import { API_URL } from "@/lib/api"
 
 interface LigneDocument {
   id: string

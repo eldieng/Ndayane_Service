@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { ArrowLeft, ArrowUpCircle, ArrowDownCircle, ArrowLeftRight, Loader2, Calendar, Package, User, Filter } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface MouvementStock {
   id: string

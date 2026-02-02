@@ -5,6 +5,7 @@ import { ArrowLeft, Plus, Trash2, Save, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/components/ui/Toast"
+import { API_URL } from "@/lib/api"
 
 interface Produit { id: string; nom: string; unite: string }
 interface Depot { id: string; nom: string }

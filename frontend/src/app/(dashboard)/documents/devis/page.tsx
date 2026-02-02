@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowLeft, Plus, Minus, Trash2, Printer, Search, User, FileText, Save, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { ENTREPRISE, getContactPrint } from "@/config/entreprise"
+import { API_URL } from "@/lib/api"
 
 interface Produit {
   id: string

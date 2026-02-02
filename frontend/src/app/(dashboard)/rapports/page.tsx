@@ -15,6 +15,7 @@ import {
   ArrowDownRight
 } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface StatsVentes {
   totalVentes: number

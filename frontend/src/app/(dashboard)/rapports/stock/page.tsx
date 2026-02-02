@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { ArrowLeft, Download, Loader2, Package, Warehouse, AlertTriangle } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface StockItem {
   id: string

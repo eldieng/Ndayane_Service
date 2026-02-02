@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { ArrowLeft, AlertTriangle, Package, Loader2, PackagePlus } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface AlerteStock {
   id: string

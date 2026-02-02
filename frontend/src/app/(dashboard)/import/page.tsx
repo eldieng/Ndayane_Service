@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import * as XLSX from "xlsx"
+import { API_URL } from "@/lib/api"
 
 type ImportType = "produits" | "clients" | null
 
