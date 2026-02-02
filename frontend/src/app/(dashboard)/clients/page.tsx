@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Plus, Search, Phone, MapPin, Edit, Trash2, Eye, Loader2, CheckSquare, Square, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/components/ui/Toast"
+import { API_URL } from "@/lib/api"
 
 interface Client {
   id: string

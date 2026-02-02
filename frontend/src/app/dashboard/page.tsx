@@ -21,6 +21,7 @@ import Link from "next/link"
 import Sidebar from "@/components/layout/Sidebar"
 import Header from "@/components/layout/Header"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend } from "recharts"
+import { API_URL } from "@/lib/api"
 
 interface StockAlerte {
   id: string

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Plus, Search, Edit, Trash2, Eye, Package, Loader2, CheckSquare, Square, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface Produit {
   id: string

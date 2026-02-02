@@ -5,6 +5,7 @@ import { Search, Plus, Minus, Trash2, ShoppingCart, User, CreditCard, Banknote, 
 import { useToast } from "@/components/ui/Toast"
 import Link from "next/link"
 import { ENTREPRISE, getContactPrint } from "@/config/entreprise"
+import { API_URL } from "@/lib/api"
 
 interface Produit {
   id: string

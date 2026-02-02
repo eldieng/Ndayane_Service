@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Search, Plus, Edit2, Trash2, Loader2, UserCog, X, Save, Eye, EyeOff, UserX, AlertTriangle } from "lucide-react"
+import { API_URL } from "@/lib/api"
 
 interface Utilisateur {
   id: string

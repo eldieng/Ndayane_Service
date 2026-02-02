@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Search, CreditCard, Loader2, Calendar, User, Banknote, Smartphone, FileText, Plus, Check, X } from "lucide-react"
 import { useToast } from "@/components/ui/Toast"
+import { API_URL } from "@/lib/api"
 
 interface Paiement {
   id: string

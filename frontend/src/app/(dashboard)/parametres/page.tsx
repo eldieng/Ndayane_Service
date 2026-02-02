@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Save, User, Building, Lock, Loader2 } from "lucide-react"
 import { useToast } from "@/components/ui/Toast"
+import { API_URL } from "@/lib/api"
 
 interface UserProfile {
   id: string
