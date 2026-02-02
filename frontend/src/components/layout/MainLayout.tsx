@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Sidebar from "./Sidebar"
 import Header from "./Header"
+import InstallPWA from "@/components/ui/InstallPWA"
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -33,6 +34,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
           {children}
         </main>
       </div>
+
+      {/* Bannière d'installation PWA */}
+      <InstallPWA />
     </div>
   )
 }
