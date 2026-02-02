@@ -59,7 +59,7 @@ export default function DocumentsPage() {
       if (typeFilter) params.append("type", typeFilter)
       if (search) params.append("search", search)
 
-      const response = await fetch(`http://localhost:3001/documents?${params}`, {
+      const response = await fetch(`${API_URL}/documents?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -84,7 +84,7 @@ export default function DocumentsPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/documents/${id}`, {
+      const response = await fetch(`${API_URL}/documents/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })

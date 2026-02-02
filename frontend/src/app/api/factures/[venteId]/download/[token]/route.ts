@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { venteId: string; token: string } }
@@ -9,7 +11,7 @@ export async function GET(
   try {
     // Proxy vers le backend
     const response = await fetch(
-      `http://localhost:3001/factures/${venteId}/download/${token}`,
+      `${API_URL}/factures/${venteId}/download/${token}`,
       { method: 'GET' }
     )
 

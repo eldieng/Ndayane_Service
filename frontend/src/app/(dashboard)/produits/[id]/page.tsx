@@ -1,5 +1,7 @@
 "use client"
 
+import { API_URL } from "@/lib/api"
+
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Edit, Package, Warehouse, Loader2, Trash2, Tag } from "lucide-react"
@@ -34,7 +36,7 @@ export default function ProduitDetailPage() {
   const fetchProduit = async (id: string) => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/produits/${id}`, {
+      const response = await fetch(`${API_URL}/produits/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -52,7 +54,7 @@ export default function ProduitDetailPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/produits/${params.id}`, {
+      const response = await fetch(`${API_URL}/produits/${params.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })

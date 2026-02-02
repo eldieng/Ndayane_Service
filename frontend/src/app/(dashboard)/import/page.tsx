@@ -148,7 +148,7 @@ export default function ImportPage() {
             if (!mappedData.type) mappedData.type = "PARTICULIER"
           }
 
-          const response = await fetch(`http://localhost:3001/${endpoint}`, {
+          const response = await fetch(`${API_URL}/${endpoint}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -162,7 +162,7 @@ export default function ImportPage() {
             
             // Si produit avec stock initial, créer le mouvement de stock
             if (importType === "produits" && mappedData.stockInitial && mappedData.stockInitial > 0) {
-              const stockRes = await fetch("http://localhost:3001/stock/entree", {
+              const stockRes = await fetch("${API_URL}/stock/entree", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

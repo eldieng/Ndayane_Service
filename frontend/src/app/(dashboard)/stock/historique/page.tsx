@@ -29,7 +29,7 @@ export default function HistoriqueMouvementsPage() {
   const fetchMouvements = async () => {
     try {
       const token = localStorage.getItem("token")
-      let url = "http://localhost:3001/stock/mouvements"
+      let url = "${API_URL}/stock/mouvements"
       if (typeFilter) {
         url += `?type=${typeFilter}`
       }

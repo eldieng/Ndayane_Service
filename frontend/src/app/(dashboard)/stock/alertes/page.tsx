@@ -26,7 +26,7 @@ export default function AlertesStockPage() {
   const fetchAlertes = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/stock/alertes", {
+      const response = await fetch("${API_URL}/stock/alertes", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {

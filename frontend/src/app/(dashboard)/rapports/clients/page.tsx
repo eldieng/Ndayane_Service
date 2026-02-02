@@ -27,7 +27,7 @@ export default function RapportClientsPage() {
     setLoading(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/rapports/clients?periode=${periode}`, {
+      const response = await fetch(`${API_URL}/rapports/clients?periode=${periode}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {

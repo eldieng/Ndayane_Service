@@ -1,5 +1,7 @@
 "use client"
 
+import { API_URL } from "@/lib/api"
+
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Printer, Loader2, Check, Plus, Banknote, Smartphone, CreditCard, X, FileText, ClipboardList } from "lucide-react"
@@ -58,7 +60,7 @@ export default function VenteDetailPage() {
   const fetchVente = async (id: string) => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/ventes/${id}`, {
+      const response = await fetch(`${API_URL}/ventes/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -189,7 +191,7 @@ export default function VenteDetailPage() {
     setSubmitting(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/paiements", {
+      const response = await fetch(`${API_URL}/paiements`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -440,7 +442,7 @@ export default function VenteDetailPage() {
 
     // Générer le token pour le lien de téléchargement
     const token = btoa(vente.id).replace(/[+/=]/g, '').slice(0, 12)
-    const pdfUrl = `http://localhost:3001/factures/${vente.id}/download/${token}`
+    const pdfUrl = `${API_URL}/factures/${vente.id}/download/${token}`
 
     // Message court avec lien PDF
     const message = `🧾 *FACTURE N°${vente.numero}*

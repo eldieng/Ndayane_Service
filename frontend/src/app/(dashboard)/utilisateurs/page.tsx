@@ -35,7 +35,7 @@ export default function UtilisateursPage() {
   const fetchUtilisateurs = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/utilisateurs", {
+      const response = await fetch("${API_URL}/utilisateurs", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -54,8 +54,8 @@ export default function UtilisateursPage() {
     try {
       const token = localStorage.getItem("token")
       const url = editingUser 
-        ? `http://localhost:3001/utilisateurs/${editingUser.id}`
-        : "http://localhost:3001/utilisateurs"
+        ? `${API_URL}/utilisateurs/${editingUser.id}`
+        : "${API_URL}/utilisateurs"
       
       const body = editingUser && !formData.motDePasse
         ? { nom: formData.nom, email: formData.email, role: formData.role, actif: formData.actif }
@@ -88,7 +88,7 @@ export default function UtilisateursPage() {
     if (!confirm("Êtes-vous sûr de vouloir désactiver cet utilisateur ?")) return
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/utilisateurs/${id}`, {
+      const response = await fetch(`${API_URL}/utilisateurs/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -110,7 +110,7 @@ export default function UtilisateursPage() {
     }
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/utilisateurs/${id}/permanent`, {
+      const response = await fetch(`${API_URL}/utilisateurs/${id}/permanent`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })

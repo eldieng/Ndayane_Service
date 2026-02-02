@@ -1,4 +1,4 @@
-ï»¿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { Search, ArrowDownCircle, ArrowUpCircle, ArrowLeftRight, Package, AlertTriangle, Loader2, Warehouse, History } from "lucide-react"
@@ -42,9 +42,9 @@ export default function StockPage() {
         const token = localStorage.getItem("token")
         const headers = { Authorization: `Bearer ${token}` }
         const [stocksRes, mouvementsRes, depotsRes] = await Promise.all([
-          fetch("http://localhost:3001/stock", { headers }),
-          fetch("http://localhost:3001/stock/mouvements", { headers }),
-          fetch("http://localhost:3001/depots", { headers }),
+          fetch("${API_URL}/stock", { headers }),
+          fetch("${API_URL}/stock/mouvements", { headers }),
+          fetch("${API_URL}/depots", { headers }),
         ])
         if (stocksRes.ok) setStocks(await stocksRes.json())
         if (mouvementsRes.ok) setMouvements(await mouvementsRes.json())
@@ -76,10 +76,10 @@ export default function StockPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Gestion du Stock</h1>
-          <p className="text-gray-500">Suivez et gÃ©rez votre inventaire</p>
+          <p className="text-gray-500">Suivez et gérez votre inventaire</p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Link href="/stock/entree" className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"><ArrowDownCircle className="w-5 h-5" />EntrÃ©e</Link>
+          <Link href="/stock/entree" className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"><ArrowDownCircle className="w-5 h-5" />Entrée</Link>
           <Link href="/stock/sortie" className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium"><ArrowUpCircle className="w-5 h-5" />Sortie</Link>
           <Link href="/stock/transfert" className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium"><ArrowLeftRight className="w-5 h-5" />Transfert</Link>
           <Link href="/stock/historique" className="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium"><History className="w-5 h-5" />Historique</Link>

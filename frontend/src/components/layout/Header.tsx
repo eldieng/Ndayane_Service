@@ -4,6 +4,7 @@ import { Bell, Search, User, Menu, LogOut, AlertTriangle, Package, Users, FileTe
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface HeaderProps {
   onMenuClick?: () => void
@@ -68,7 +69,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
       // Sinon récupérer depuis l'API
       const token = localStorage.getItem("token")
       if (!token) return
-      const response = await fetch("http://localhost:3001/utilisateurs/profile", {
+      const response = await fetch(`${API_URL}/utilisateurs/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -85,7 +86,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
     try {
       const token = localStorage.getItem("token")
       if (!token) return
-      const response = await fetch("http://localhost:3001/stock/alertes", {
+      const response = await fetch(`${API_URL}/stock/alertes`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -132,9 +133,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
       const headers = { Authorization: `Bearer ${token}` }
       
       const [produitsRes, clientsRes, ventesRes] = await Promise.all([
-        fetch(`http://localhost:3001/produits?search=${encodeURIComponent(query)}`, { headers }),
-        fetch(`http://localhost:3001/clients?search=${encodeURIComponent(query)}`, { headers }),
-        fetch(`http://localhost:3001/ventes?search=${encodeURIComponent(query)}`, { headers }),
+        fetch(`${API_URL}/produits?search=${encodeURIComponent(query)}`, { headers }),
+        fetch(`${API_URL}/clients?search=${encodeURIComponent(query)}`, { headers }),
+        fetch(`${API_URL}/ventes?search=${encodeURIComponent(query)}`, { headers }),
       ])
 
       const results: SearchResult[] = []

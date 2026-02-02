@@ -61,7 +61,7 @@ export default function ProduitsPage() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/categories", {
+      const response = await fetch("${API_URL}/categories", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) setCategories(await response.json())
@@ -80,7 +80,7 @@ export default function ProduitsPage() {
       })
       if (categorieFilter) params.append("categorieId", categorieFilter)
       
-      const response = await fetch(`http://localhost:3001/produits?${params}`, {
+      const response = await fetch(`${API_URL}/produits?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       
@@ -125,7 +125,7 @@ export default function ProduitsPage() {
       const token = localStorage.getItem("token")
       const idsArray = Array.from(selectedIds)
       for (const id of idsArray) {
-        await fetch(`http://localhost:3001/produits/${id}`, {
+        await fetch(`${API_URL}/produits/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -149,7 +149,7 @@ export default function ProduitsPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/produits/${id}`, {
+      const response = await fetch(`${API_URL}/produits/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })

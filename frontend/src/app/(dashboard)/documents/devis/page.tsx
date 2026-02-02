@@ -61,8 +61,8 @@ export default function DevisPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [produitsRes, clientsRes] = await Promise.all([
-        fetch("http://localhost:3001/produits?limit=1000", { headers }),
-        fetch("http://localhost:3001/clients?limit=1000", { headers }),
+        fetch("${API_URL}/produits?limit=1000", { headers }),
+        fetch("${API_URL}/clients?limit=1000", { headers }),
       ])
 
       if (produitsRes.ok) {
@@ -156,7 +156,7 @@ export default function DevisPage() {
     setSaving(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/documents", {
+      const response = await fetch("${API_URL}/documents", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

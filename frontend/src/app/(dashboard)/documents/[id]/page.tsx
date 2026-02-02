@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Printer, Save, Loader2, FileText, ClipboardList, Check } from "lucide-react"
 import { ENTREPRISE, getContactPrint } from "@/config/entreprise"
+import { API_URL } from "@/lib/api"
 
 interface LigneDocument {
   id: string
@@ -64,7 +65,7 @@ export default function DocumentDetailPage() {
     setLoading(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/documents/${id}`, {
+      const response = await fetch(`${API_URL}/documents/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -90,7 +91,7 @@ export default function DocumentDetailPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/documents/${document.id}/statut`, {
+      const response = await fetch(`${API_URL}/documents/${document.id}/statut`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +114,7 @@ export default function DocumentDetailPage() {
     setSaving(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/documents/${document.id}`, {
+      const response = await fetch(`${API_URL}/documents/${document.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

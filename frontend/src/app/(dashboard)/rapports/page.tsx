@@ -58,9 +58,9 @@ export default function RapportsPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [statsRes, ventesRes, produitsRes] = await Promise.all([
-        fetch(`http://localhost:3001/rapports/stats?periode=${periode}`, { headers }),
-        fetch(`http://localhost:3001/rapports/ventes-par-jour?periode=${periode}`, { headers }),
-        fetch(`http://localhost:3001/rapports/produits-populaires?periode=${periode}`, { headers }),
+        fetch(`${API_URL}/rapports/stats?periode=${periode}`, { headers }),
+        fetch(`${API_URL}/rapports/ventes-par-jour?periode=${periode}`, { headers }),
+        fetch(`${API_URL}/rapports/produits-populaires?periode=${periode}`, { headers }),
       ])
 
       if (statsRes.ok) setStats(await statsRes.json())

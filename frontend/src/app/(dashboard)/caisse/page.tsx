@@ -100,9 +100,9 @@ export default function CaissePage() {
       const headers = { Authorization: `Bearer ${token}` }
       
       const [produitsRes, clientsRes, categoriesRes] = await Promise.all([
-        fetch("http://localhost:3001/produits?limit=500", { headers }),
-        fetch("http://localhost:3001/clients", { headers }),
-        fetch("http://localhost:3001/categories", { headers }),
+        fetch("${API_URL}/produits?limit=500", { headers }),
+        fetch("${API_URL}/clients", { headers }),
+        fetch("${API_URL}/categories", { headers }),
       ])
       
       if (produitsRes.ok) {
@@ -173,7 +173,7 @@ export default function CaissePage() {
     setLoading(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/ventes", {
+      const response = await fetch("${API_URL}/ventes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -250,7 +250,7 @@ export default function CaissePage() {
       const token = localStorage.getItem("token")
       
       // 1. Créer la vente SANS mode de paiement (statut EN_ATTENTE)
-      const venteResponse = await fetch("http://localhost:3001/ventes", {
+      const venteResponse = await fetch("${API_URL}/ventes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -272,7 +272,7 @@ export default function CaissePage() {
       const vente = await venteResponse.json()
 
       // 2. Créer le paiement partiel (acompte)
-      const paiementResponse = await fetch("http://localhost:3001/paiements", {
+      const paiementResponse = await fetch("${API_URL}/paiements", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -423,7 +423,7 @@ export default function CaissePage() {
     setSavingClient(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/clients", {
+      const response = await fetch("${API_URL}/clients", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Save, Loader2 } from "lucide-react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface Categorie {
   id: string
@@ -48,8 +49,8 @@ export default function ModifierProduitPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [produitRes, categoriesRes] = await Promise.all([
-        fetch(`http://localhost:3001/produits/${params.id}`, { headers }),
-        fetch("http://localhost:3001/categories", { headers }),
+        fetch(`${API_URL}/produits/${params.id}`, { headers }),
+        fetch(`${API_URL}/categories`, { headers }),
       ])
 
       if (produitRes.ok) {
@@ -88,7 +89,7 @@ export default function ModifierProduitPage() {
       const token = localStorage.getItem("token")
       
       // Mettre à jour le produit
-      const response = await fetch(`http://localhost:3001/produits/${params.id}`, {
+      const response = await fetch(`${API_URL}/produits/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +116,7 @@ export default function ModifierProduitPage() {
           // Si le stock actuel est 0 ou si on ajoute du stock, utiliser entree
           // Si on retire du stock, utiliser sortie
           if (diff > 0) {
-            await fetch("http://localhost:3001/stock/entree", {
+            await fetch(`${API_URL}/stock/entree`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -129,7 +130,7 @@ export default function ModifierProduitPage() {
               }),
             })
           } else if (diff < 0 && currentStock > 0) {
-            await fetch("http://localhost:3001/stock/sortie", {
+            await fetch(`${API_URL}/stock/sortie`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

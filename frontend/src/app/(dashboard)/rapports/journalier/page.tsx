@@ -77,7 +77,7 @@ export default function RapportJournalierPage() {
       const token = localStorage.getItem("token")
       const headers = { Authorization: `Bearer ${token}` }
 
-      const response = await fetch("http://localhost:3001/ventes?limit=1000", { headers })
+      const response = await fetch("${API_URL}/ventes?limit=1000", { headers })
       if (response.ok) {
         const result = await response.json()
         const allVentes = result.data || result || []

@@ -91,12 +91,12 @@ export default function DashboardPage() {
       const headers = { Authorization: `Bearer ${token}` }
 
       const [statsRes, alertesRes, ventesRes, ventesJourRes, ventesCatRes, compRes] = await Promise.all([
-        fetch("http://localhost:3001/dashboard/stats", { headers }),
-        fetch("http://localhost:3001/dashboard/alertes-stock", { headers }),
-        fetch("http://localhost:3001/dashboard/ventes-recentes", { headers }),
-        fetch(`http://localhost:3001/dashboard/ventes-par-jour?jours=${periode}`, { headers }),
-        fetch("http://localhost:3001/dashboard/ventes-par-categorie", { headers }),
-        fetch(`http://localhost:3001/dashboard/comparaison?jours=${periode}`, { headers }),
+        fetch("${API_URL}/dashboard/stats", { headers }),
+        fetch("${API_URL}/dashboard/alertes-stock", { headers }),
+        fetch("${API_URL}/dashboard/ventes-recentes", { headers }),
+        fetch(`${API_URL}/dashboard/ventes-par-jour?jours=${periode}`, { headers }),
+        fetch("${API_URL}/dashboard/ventes-par-categorie", { headers }),
+        fetch(`${API_URL}/dashboard/comparaison?jours=${periode}`, { headers }),
       ])
 
       if (statsRes.ok) {
@@ -138,8 +138,8 @@ export default function DashboardPage() {
       const token = localStorage.getItem("token")
       const headers = { Authorization: `Bearer ${token}` }
       const [ventesJourRes, compRes] = await Promise.all([
-        fetch(`http://localhost:3001/dashboard/ventes-par-jour?jours=${periode}`, { headers }),
-        fetch(`http://localhost:3001/dashboard/comparaison?jours=${periode}`, { headers }),
+        fetch(`${API_URL}/dashboard/ventes-par-jour?jours=${periode}`, { headers }),
+        fetch(`${API_URL}/dashboard/comparaison?jours=${periode}`, { headers }),
       ])
       if (ventesJourRes.ok) setVentesParJour(await ventesJourRes.json())
       if (compRes.ok) setComparaison(await compRes.json())

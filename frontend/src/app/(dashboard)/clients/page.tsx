@@ -58,7 +58,7 @@ export default function ClientsPage() {
         limit: "20",
       })
       
-      const response = await fetch(`http://localhost:3001/clients?${params}`, {
+      const response = await fetch(`${API_URL}/clients?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -107,7 +107,7 @@ export default function ClientsPage() {
       const token = localStorage.getItem("token")
       const idsArray = Array.from(selectedIds)
       for (const id of idsArray) {
-        await fetch(`http://localhost:3001/clients/${id}`, {
+        await fetch(`${API_URL}/clients/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -127,7 +127,7 @@ export default function ClientsPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/clients/${id}`, {
+      const response = await fetch(`${API_URL}/clients/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })

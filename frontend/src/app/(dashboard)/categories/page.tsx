@@ -25,7 +25,7 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/categories", {
+      const response = await fetch("${API_URL}/categories", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -44,7 +44,7 @@ export default function CategoriesPage() {
 
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/categories", {
+      const response = await fetch("${API_URL}/categories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function CategoriesPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/categories/${id}`, {
+      const response = await fetch(`${API_URL}/categories/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -94,7 +94,7 @@ export default function CategoriesPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/categories/${id}`, {
+      const response = await fetch(`${API_URL}/categories/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

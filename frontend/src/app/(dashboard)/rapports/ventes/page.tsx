@@ -38,7 +38,7 @@ export default function RapportVentesPage() {
     try {
       const token = localStorage.getItem("token")
       const response = await fetch(
-        `http://localhost:3001/rapports/ventes?dateDebut=${dateDebut}&dateFin=${dateFin}`,
+        `${API_URL}/rapports/ventes?dateDebut=${dateDebut}&dateFin=${dateFin}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       if (response.ok) {

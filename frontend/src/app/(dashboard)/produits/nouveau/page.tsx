@@ -31,7 +31,7 @@ export default function NouveauProduitPage() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/categories", {
+      const response = await fetch("${API_URL}/categories", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -48,7 +48,7 @@ export default function NouveauProduitPage() {
 
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/produits", {
+      const response = await fetch("${API_URL}/produits", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

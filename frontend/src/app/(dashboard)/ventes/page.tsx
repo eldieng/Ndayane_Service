@@ -50,7 +50,7 @@ export default function VentesPage() {
         limit: "20",
       })
       
-      const response = await fetch(`http://localhost:3001/ventes?${params}`, {
+      const response = await fetch(`${API_URL}/ventes?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {

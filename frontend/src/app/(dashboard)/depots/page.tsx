@@ -32,7 +32,7 @@ export default function DepotsPage() {
   const fetchDepots = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/depots", {
+      const response = await fetch("${API_URL}/depots", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -51,7 +51,7 @@ export default function DepotsPage() {
 
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/depots", {
+      const response = await fetch("${API_URL}/depots", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function DepotsPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/depots/${id}`, {
+      const response = await fetch(`${API_URL}/depots/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -100,7 +100,7 @@ export default function DepotsPage() {
     
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/depots/${editingDepot.id}`, {
+      const response = await fetch(`${API_URL}/depots/${editingDepot.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

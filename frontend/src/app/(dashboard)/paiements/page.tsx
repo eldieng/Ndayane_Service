@@ -48,7 +48,7 @@ export default function PaiementsPage() {
   const fetchPaiements = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/paiements", {
+      const response = await fetch("${API_URL}/paiements", {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -102,7 +102,7 @@ export default function PaiementsPage() {
     try {
       const token = localStorage.getItem("token")
       // Rechercher dans les ventes
-      const response = await fetch(`http://localhost:3001/ventes?search=${encodeURIComponent(searchFacture)}`, {
+      const response = await fetch(`${API_URL}/ventes?search=${encodeURIComponent(searchFacture)}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -144,7 +144,7 @@ export default function PaiementsPage() {
     setSubmitting(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("http://localhost:3001/paiements", {
+      const response = await fetch("${API_URL}/paiements", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

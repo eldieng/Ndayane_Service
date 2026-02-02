@@ -1,5 +1,7 @@
 "use client"
 
+import { API_URL } from "@/lib/api"
+
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Save, Loader2 } from "lucide-react"
@@ -35,7 +37,7 @@ export default function ModifierClientPage() {
   const fetchClient = async (id: string) => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/clients/${id}`, {
+      const response = await fetch(`${API_URL}/clients/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.ok) {
@@ -64,7 +66,7 @@ export default function ModifierClientPage() {
     setSaving(true)
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch(`http://localhost:3001/clients/${params.id}`, {
+      const response = await fetch(`${API_URL}/clients/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
