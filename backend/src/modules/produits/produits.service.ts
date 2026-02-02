@@ -38,7 +38,6 @@ export class ProduitsService {
     if (search) {
       where.OR = [
         { nom: { contains: search, mode: 'insensitive' } },
-        { codeBarre: { contains: search, mode: 'insensitive' } },
       ];
     }
 
